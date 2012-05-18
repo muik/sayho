@@ -6,7 +6,6 @@
 </ul>
 <% end %>
 
-
 <p>
   <b>Nickname:</b>
   <%= @say.nickname %>
@@ -16,7 +15,6 @@
   <b>Text:</b>
   <%= @say.text %>
 </p>
-
 
 <%= link_to 'Edit', edit_say_path(@say) %> |
 <%= link_to 'Back', says_path %>
@@ -28,11 +26,9 @@
 <% end %>
 
 <%= form_for([@say, @say.after_says.build]) do |f| %>
-  <% #= f.hidden_field :before_say_id, value: @new_say.before_say_id %>
-
   <div class="field">
     <%= f.label :nickname %><br />
-    <%= f.text_field :nickname %>
+    <%= f.text_field :nickname, value: saved_nickname %>
   </div>
   <div class="field">
     <%= f.label :text %><br />

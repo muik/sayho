@@ -41,9 +41,8 @@ class SaysController < ApplicationController
   # POST /says.json
   def create
     @say = Say.new(params[:say])
-    if params[:say_id]
-      @say.before_say_id = params[:say_id]
-    end
+    @say.before_say_id = params[:say_id] if params[:say_id]
+    save_nickname(@say.nickname)
 
     respond_to do |format|
       if @say.save
@@ -54,6 +53,13 @@ class SaysController < ApplicationController
         format.json { render json: @say.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def save_nickname(value)
+    cookies[:nickname] = {
+      value: value,
+      expires: 1.year.from_now,
+    }
   end
 
   # PUT /says/1
