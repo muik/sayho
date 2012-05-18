@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<% @say.before_says.each do |say| %>
+<ul>
+  <li><%= say.nickname %> - <%= link_to say.text, say %></li>
+</ul>
+<% end %>
+
+
+<p>
+  <b>Nickname:</b>
+  <%= @say.nickname %>
+</p>
+
+<p>
+  <b>Text:</b>
+  <%= @say.text %>
+</p>
+
+
+<%= link_to 'Edit', edit_say_path(@say) %> |
+<%= link_to 'Back', says_path %>
+
+<% @say.after_says.each do |say| %>
+<ul>
+  <li><%= say.nickname %> - <%= link_to say.text, say %></li>
+</ul>
+<% end %>
+
+<%= form_for([@say, @say.after_says.build]) do |f| %>
+  <% #= f.hidden_field :before_say_id, value: @new_say.before_say_id %>
+
+  <div class="field">
+    <%= f.label :nickname %><br />
+    <%= f.text_field :nickname %>
+  </div>
+  <div class="field">
+    <%= f.label :text %><br />
+    <%= f.text_field :text %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

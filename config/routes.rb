@@ -1,4 +1,8 @@
 Sayho::Application.routes.draw do
+  resources :says do
+    resources :says
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
