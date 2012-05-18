@@ -1,4 +1,6 @@
 Sayho::Application.routes.draw do
+  resources :users
+
   resources :says do
     resources :says
   end
