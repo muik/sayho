@@ -1,46 +1,102 @@
 class VotesController < ApplicationController
-  # POST /says
-  # POST /says.json
+  # GET /votes
+  # GET /votes.json
+  def index
+    return
+    @votes = Vote.all
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @votes }
+    end
+  end
+
+  # GET /votes/1
+  # GET /votes/1.json
+  def show
+    return
+    @vote = Vote.find(params[:id])
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @vote }
+    end
+  end
+
+  # GET /votes/new
+  # GET /votes/new.json
+  def new
+    return
+    @vote = Vote.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @vote }
+    end
+  end
+
+  # GET /votes/1/edit
+  def edit
+    return
+    @vote = Vote.find(params[:id])
+  end
+
+  # POST /votes
+  # POST /votes.json
   def create
-    user = User.find_or_create_by(user_identity: current_user_identity)
-    say = Say.find(params[:say_id])
+    @vote = Vote.new(params[:vote])
+    @vote.user_id = current_user.id
+    @vote.say_id = params[:say_id]
+    @vote.set_value(params[:value])
 
     respond_to do |format|
-      if user.vote(say, params[:value])
-        format.json { render json: user.vote_value(say), status: :created }
+      if @vote.save
+        format.html { redirect_to @vote, notice: 'Vote was successfully created.' }
+        format.json { render json: @vote, status: :created }
       else
-        format.json { render json: nil, status: :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @vote.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PUT /says/1
-  # PUT /says/1.json
+  # PUT /votes/1
+  # PUT /votes/1.json
   def update
-    user = User.find_or_create_by(user_identity: current_user_identity)
-    say = Say.find(params[:say_id])
+    @vote = Vote.find(params[:id])
+    return unauth unless current_user && @vote.user_id == current_user.id
+    @vote.set_value(params[:value])
 
     respond_to do |format|
-      if user.vote(say, params[:value])
-        format.json { render json: user.vote_value(say) }
+      if @vote.save
+        format.html { redirect_to @vote, notice: 'Vote was successfully updated.' }
+        format.json { head :no_content }
       else
-        format.json { render json: nil, status: :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @vote.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /says/1
-  # DELETE /says/1.json
+  def unauth
+    render json: {
+      status_code: 401,
+      message: 'Unauthorized',
+    },
+    status: :unauthorized
+  end
+
+  # DELETE /votes/1
+  # DELETE /votes/1.json
   def destroy
-    user = User.find_or_create_by(user_identity: current_user_identity)
-    say = Say.find(params[:say_id])
+    @vote = Vote.find(params[:id])
+    return unauth unless current_user && @vote.user_id == current_user.id
+
+    @vote.destroy
 
     respond_to do |format|
-      if user.unvote(say)
-        format.json { render json: user.vote_value(say) }
-      else
-        format.json { render json: user.vote_value(say) }
-      end
+      format.html { redirect_to votes_url }
+      format.json { head :no_content }
     end
   end
 end

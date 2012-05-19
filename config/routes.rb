@@ -2,10 +2,7 @@ Sayho::Application.routes.draw do
   resources :users
   resources :says do
     resources :says
-    member do
-      post 'votes'
-      delete 'votes' => 'says#destroy_vote'
-    end
+    resources :votes
   end
 
   root :to => 'says#index'

@@ -1,19 +1,20 @@
 class Say
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongo::Voteable
-  voteable self, up: 1, down: -1
   field :nickname, :type => String
   field :text, :type => String
   field :point, :type => Integer, default: 0
+  field :up_votes_count, :type => Integer
+  field :down_votes_count, :type => Integer
   field :after_says_count, :type => Integer
   belongs_to :before_say, class_name: 'Say'
+  has_many :votes
   validates_presence_of :nickname, :text
   scope :popular, order_by(:point, :desc).order_by(:created_at, :desc)
   scope :after_popular, order_by(:point, :desc).order_by(:created_at, :asc)
   scope :begin, where(before_say_id: nil)
-  before_update :set_point
   before_create :inc_after_says_count
+
   index [
     [:point, Mongo::DESCENDING],
     [:created_at, Mongo::DESCENDING],
@@ -31,11 +32,6 @@ class Say
   end
 
   protected
-  def set_point
-  p votes
-    self.point = votes.point if votes_changed?
-  end
-
   def inc_after_says_count
     before_say.inc(:after_says_count, 1) if before_say
   end
