@@ -1,25 +1,12 @@
 <h1>Listing says</h1>
 
-<table>
-  <tr>
-    <th>Nickname</th>
-    <th>Text</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<%= link_to 'New Say', new_say_path, class: 'btn btn-large' %>
 
+<ul class="says">
 <% @says.each do |say| %>
-  <tr>
-    <td><%= say.nickname %></td>
-    <td><%= say.text %></td>
-    <td><%= link_to 'Show', say %></td>
-    <td><%= link_to 'Edit', edit_say_path(say) %></td>
-    <td><%= link_to 'Destroy', say, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+  <li>
+    <span class="nickname"><%= say.nickname %></span>
+    <div class="text"><%= link_to say.text, say %></div>
+  </li>
 <% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Say', new_say_path %>
+</ul>

@@ -1,4 +1,4 @@
-<%= form_for(@say) do |f| %>
+<%= form_for(@say, html: {:class => 'form-horizontal'}) do |f| %>
   <% if @say.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@say.errors.count, "error") %> prohibited this say from being saved:</h2>
@@ -11,15 +11,21 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :nickname %><br />
-    <%= f.text_field :nickname %>
-  </div>
-  <div class="field">
-    <%= f.label :text %><br />
-    <%= f.text_field :text %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <fieldset>
+    <div class="control-group">
+      <%= f.label :nickname, class: 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :nickname, class: 'input-xlarge' %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= f.label :text, class: 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :text, class: 'input-xlarge' %>
+      </div>
+    </div>
+    <div class="form-actions">
+      <%= f.submit class: 'btn btn-large' %>
+    </div>
+  </fieldset>
 <% end %>

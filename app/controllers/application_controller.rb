@@ -12,6 +12,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_user
+    @current_user
+  end
+
   def current_user_identity
     cookies[:user_identity]
   end
@@ -20,6 +24,7 @@ class ApplicationController < ActionController::Base
     if current_user_identity
       @current_user = User.find_or_create_by(user_identity: current_user_identity)
     end
+    @saved_nickname = cookies[:nickname]
   end
 
   private

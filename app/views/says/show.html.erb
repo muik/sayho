@@ -6,28 +6,43 @@
 </ul>
 <% end %>
 
-<p>
-  <b>Nickname:</b>
-  <%= @say.nickname %>
-</p>
-
-<p>
-  <b>Text:</b>
-  <%= @say.text %>
-  <%= @say.votes %>
-
+<div class="say">
+  <span class="nickname">
+    <%= @say.nickname %>
+  </span>
+  <p class="text"><%= @say.text %></p>
   <div class="vote-set">
-    <a class="btn btn-large vote <%= vote_active_class(@say, :up) %>" href="<%= say_path(@say) %>/votes" data-remote="true" data-value="up" data-active-class="btn-primary" data-loading-text="processing..">up</a>
-    <a class="btn btn-large vote <%= vote_active_class(@say, :down) %>" href="<%= say_path(@say) %>/votes" data-remote="true" data-value="down" data-active-class="btn-danger" data-loading-text="processing..">down</a>
+    <a class="btn btn-large vote <%= vote_active_class(@say, :up) %>" href="<%= say_path(@say) %>/votes" data-remote="true" data-value="up" data-active-class="btn-primary" data-loading-text="processing..">
+      <i class="icon-thumbs-up"></i>
+      up
+    </a>
+    <a class="btn btn-large vote <%= vote_active_class(@say, :down) %>" href="<%= say_path(@say) %>/votes" data-remote="true" data-value="down" data-active-class="btn-danger" data-loading-text="processing..">
+      <i class="icon-thumbs-down"></i>
+      down
+    </a>
+    <span class="point"><%= @say.point %> (123/-12)</span>
   </div>
+</div>
+<p>
+  <%= @say.votes %>
 </p>
 
-<%= link_to 'Edit', edit_say_path(@say) %> |
-<%= link_to 'Back', says_path %>
-
-<% @say.after_says.each do |say| %>
-<ul>
-  <li><%= say.nickname %> - <%= link_to say.text, say %></li>
+<% @say.after_says.after_popular.each do |say| %>
+<ul class="says">
+  <li>
+    <span class="nickname"><%= say.nickname %></span> <span class="text"><%= link_to say.text, say %></span>
+    <div class="vote-set">
+      <a class="btn vote <%= vote_active_class(say, :up) %>" href="<%= say_path(say) %>/votes" data-remote="true" data-value="up" data-active-class="btn-primary" data-loading-text="processing..">
+        <i class="icon-thumbs-up"></i>
+        up
+      </a>
+      <a class="btn vote <%= vote_active_class(say, :down) %>" href="<%= say_path(say) %>/votes" data-remote="true" data-value="down" data-active-class="btn-danger" data-loading-text="processing..">
+        <i class="icon-thumbs-down"></i>
+        down
+      </a>
+      <span class="point"><%= @say.point %> (123/-12)</span>
+    </div>
+  </li>
 </ul>
 <% end %>
 

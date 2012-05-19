@@ -2,7 +2,7 @@ class SaysController < ApplicationController
   # GET /says
   # GET /says.json
   def index
-    @says = Say.all
+    @says = Say.begin.popular
 
     respond_to do |format|
       format.html # index.html.erb
@@ -25,6 +25,7 @@ class SaysController < ApplicationController
   # GET /says/new.json
   def new
     @say = Say.new
+    @say.nickname = @saved_nickname
 
     respond_to do |format|
       format.html # new.html.erb
@@ -63,13 +64,16 @@ class SaysController < ApplicationController
   end
 
   def votes
-    user = User.find_or_create_by(user_identity: current_user_identity)
+    user = current_user
     say = Say.find(params[:id])
-    user.vote(say, params[:value])
+    result = user.vote(say, params[:value])
+    unless result
+      result = user.voted?(say) && user.vote_value(say).to_s == params[:value]
+    end
 
     respond_to do |format|
-      if user.voted?(say) && user.vote_value(say).to_s == params[:value]
-        format.json { render json: user.vote_value(say), status: :created }
+      if result
+        format.json { render json: true, status: :created }
       else
         format.json { render json: nil, status: :unprocessable_entity }
       end
@@ -77,7 +81,7 @@ class SaysController < ApplicationController
   end
 
   def destroy_vote
-    user = User.find_or_create_by(user_identity: current_user_identity)
+    user = current_user
     say = Say.find(params[:id])
     user.unvote(say)
     

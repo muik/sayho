@@ -18,7 +18,7 @@
     <link href="images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
     <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
   </head>
-  <body>
+  <body class="<%= controller.controller_name %> <%= controller.action_name %>_<%= controller.controller_name %>">
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
@@ -28,7 +28,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <a class="brand" href="#">Sayho</a>
+          <a class="brand" href="/">Sayho</a>
           <div class="container nav-collapse">
             <ul class="nav">
               <li><%= link_to "Link1", "/path1"  %></li>

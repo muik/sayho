@@ -1,5 +1,5 @@
 module SaysHelper
   def saved_nickname
-    cookies[:nickname]
+    @saved_nickname
   end
 end
