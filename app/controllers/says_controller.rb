@@ -62,6 +62,34 @@ class SaysController < ApplicationController
     }
   end
 
+  def votes
+    user = User.find_or_create_by(user_identity: current_user_identity)
+    say = Say.find(params[:id])
+    user.vote(say, params[:value])
+
+    respond_to do |format|
+      if user.voted?(say) && user.vote_value(say).to_s == params[:value]
+        format.json { render json: user.vote_value(say), status: :created }
+      else
+        format.json { render json: nil, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy_vote
+    user = User.find_or_create_by(user_identity: current_user_identity)
+    say = Say.find(params[:id])
+    user.unvote(say)
+    
+    respond_to do |format|
+      if user.voted?(say) == false
+        format.json { render json: true, status: :created }
+      else
+        format.json { render json: nil, status: :unprocessable_entity }
+      end
+    end
+  end
+
   # PUT /says/1
   # PUT /says/1.json
   def update

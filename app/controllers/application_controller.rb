@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :set_user_identity
+  before_filter :set_user_identity, :set_current_user
 
   protected
   def set_user_identity
@@ -9,6 +9,16 @@ class ApplicationController < ActionController::Base
         value: generate_user_identity,
         expires: 1.year.from_now,
       }
+    end
+  end
+
+  def current_user_identity
+    cookies[:user_identity]
+  end
+
+  def set_current_user
+    if current_user_identity
+      @current_user = User.find_or_create_by(user_identity: current_user_identity)
     end
   end
 
