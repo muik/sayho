@@ -1,7 +1,50 @@
 ko:
+  views:
+    pagination:
+      first: '처음'
+      previous: '이전'
+      next: '다음'
+      last: '끝'
+      truncate: '...'
+
   says:
     types:
       popular: '센스 톡'
       recent: '최근 톡'
       my_popular: '나의 센스 톡'
       my_recent: '나의 최근 톡'
+
+  mongoid:
+    notices:
+      user:
+        updated: '회원정보가 수정되었습니다.'
+        password_updated: '비밀번호가 수정되었습니다.'
+        auth_deleted: '인증이 해제되었습니다.'
+    attributes:
+      user:
+        sns: 'SNS 인증'
+        share: 'SNS 공유'
+        share_wish_list: 'Wish List'
+        share_my_shop: 'My Shop'
+      launch:
+        person_name: '담당자 이름'
+        person_email: "담당자 이메일"
+        person_phone: "담당자 전화번호"
+        name: "상점명"
+        domain: "상점 도메인"
+        description: "상점 소개"
+        phone: '고객센터 전화번호'
+        business_time: '고객센터 운영시간'
+        email: '고객센터 이메일'
+        type: '분류'
+        ep_type: 'DB URL 분류'
+        all_url: '전체상품 URL'
+        brief_url: '요약상품 URL'
+    errors:
+      messages:
+        validations: 'asdf'
+      models:
+        user:
+          attributes:
+            email:
+              taken: ' 항목은 이미 등록되어 있습니다.'

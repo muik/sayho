@@ -5,16 +5,17 @@ class SaysController < ApplicationController
     if params[:type]
       case params[:type].to_sym
         when :popular
-          @says = Say.popular.limit(20)
+          @says = Say.popular
         when :recent
-          @says = Say.recent.limit(20)
+          @says = Say.recent
         when :my_popular
-          @says = current_user.says.popular.limit(20)
+          @says = current_user.says.popular
         when :my_recent
-          @says = current_user.says.recent.limit(20)
+          @says = current_user.says.recent
         else
           return render text: 'Not Found', status: 404
       end
+      @says = @says.page(params[:page]).per(params[:per_page])
     else
       @popular_says = Say.popular.limit(20)
       @recent_says = Say.recent.limit(20)

@@ -1,19 +1,22 @@
 <% if params[:type] %>
 <div class="row">
-  <div class="page-header">
-    <h2><%= link_to t("says.types.#{params[:type]}"), says_path(type: params[:type]) %></h2>
-  </div>
-  <ul class="says">
-  <% @says.each do |say| %>
-    <li>
-      <span class="nickname"><%= say.nickname %></span>
-      <span class="text"><%= link_to say.text, say %></span>
-    <% if say.after_says_count %>
-      <span class="badge badge-info"><%= say.after_says_count %></span>
+  <div class="span10">
+    <div class="page-header">
+      <h1><%= link_to t("says.types.#{params[:type]}"), says_path(type: params[:type]) %></h1>
+    </div>
+    <ul class="says">
+    <% @says.each do |say| %>
+      <li>
+        <span class="nickname"><%= say.nickname %></span>
+        <span class="text"><%= link_to say.text, say %></span>
+      <% if say.after_says_count %>
+        <span class="badge badge-info"><%= say.after_says_count %></span>
+      <% end %>
+      </li>
     <% end %>
-    </li>
-  <% end %>
-  </ul>
+    </ul>
+    <%= paginate @says, theme: :bootstrap %>
+  </div>
 </div>
 
 <% else %>
