@@ -1,12 +1,99 @@
-<h1>Listing says</h1>
+<% if params[:type] %>
+<div class="row">
+  <div class="page-header">
+    <h2><%= link_to t("says.types.#{params[:type]}"), says_path(type: params[:type]) %></h2>
+  </div>
+  <ul class="says">
+  <% @says.each do |say| %>
+    <li>
+      <span class="nickname"><%= say.nickname %></span>
+      <span class="text"><%= link_to say.text, say %></span>
+    <% if say.after_says_count %>
+      <span class="badge badge-info"><%= say.after_says_count %></span>
+    <% end %>
+    </li>
+  <% end %>
+  </ul>
+</div>
 
-<%= link_to 'New Say', new_say_path, class: 'btn btn-large' %>
+<% else %>
 
-<ul class="says">
-<% @says.each do |say| %>
-  <li>
-    <span class="nickname"><%= say.nickname %></span>
-    <div class="text"><%= link_to say.text, say %></div>
-  </li>
+<header class="jumbotron masthead">
+  <div class="inner">
+    <h1>SayHo
+      <%= link_to raw('<i class="icon-comment"></i> 말하기'), new_say_path, class: 'btn btn-large' %>
+    </h1>
+    <p>센스쟁이들의 대화, 세이호오~</p>
+  </div>
+</header>
+
+<div class="row">
+  <div class="span5">
+    <div class="page-header">
+      <h2><%= link_to t('says.types.popular'), says_path(type: :popular) %></h2>
+    </div>
+    <ul class="says">
+    <% @popular_says.each do |say| %>
+      <li>
+        <span class="nickname"><%= say.nickname %></span>
+        <span class="text"><%= link_to say.text, say %></span>
+      <% if say.after_says_count %>
+        <span class="badge badge-info"><%= say.after_says_count %></span>
+      <% end %>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+
+  <div class="span5">
+    <div class="page-header">
+      <h2><%= link_to t('says.types.recent'), says_path(type: :recent) %></h2>
+    </div>
+    <ul class="says popular">
+    <% @recent_says.each do |say| %>
+      <li>
+        <span class="nickname"><%= say.nickname %></span>
+        <span class="text"><%= link_to say.text, say %></span>
+      <% if say.after_says_count %>
+        <span class="badge badge-info"><%= say.after_says_count %></span>
+      <% end %>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+
+  <div class="span5">
+    <div class="page-header">
+      <h2><%= link_to t('says.types.my_popular'), says_path(type: :my_popular) %></h2>
+    </div>
+    <ul class="says">
+    <% @my_popular_says.each do |say| %>
+      <li>
+        <span class="nickname"><%= say.nickname %></span>
+        <span class="text"><%= link_to say.text, say %></span>
+      <% if say.after_says_count %>
+        <span class="badge badge-info"><%= say.after_says_count %></span>
+      <% end %>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+
+  <div class="span5">
+    <div class="page-header">
+      <h2><%= link_to t('says.types.my_recent'), says_path(type: :my_recent) %></h2>
+    </div>
+    <ul class="says popular">
+    <% @my_recent_says.each do |say| %>
+      <li>
+        <span class="nickname"><%= say.nickname %></span>
+        <span class="text"><%= link_to say.text, say %></span>
+      <% if say.after_says_count %>
+        <span class="badge badge-info"><%= say.after_says_count %></span>
+      <% end %>
+      </li>
+    <% end %>
+    </ul>
+  </div>
+</div>
 <% end %>
-</ul>

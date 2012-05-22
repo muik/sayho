@@ -4,13 +4,16 @@ class Say
   field :nickname, :type => String
   field :text, :type => String
   field :point, :type => Integer, default: 0
-  field :up_votes_count, :type => Integer
-  field :down_votes_count, :type => Integer
+  field :up_votes_count, :type => Integer, default: 0
+  field :down_votes_count, :type => Integer, default: 0
   field :after_says_count, :type => Integer
   belongs_to :before_say, class_name: 'Say'
+  belongs_to :user
   has_many :votes
   validates_presence_of :nickname, :text
-  scope :popular, order_by(:point, :desc).order_by(:created_at, :desc)
+  scope :recent, order_by(:created_at, :desc)
+  scope :popular, order_by(:point, :desc).recent
+  scope :hot, order_by(:after_says_count, :desc).recent
   scope :after_popular, order_by(:point, :desc).order_by(:created_at, :asc)
   scope :begin, where(before_say_id: nil)
   before_create :inc_after_says_count

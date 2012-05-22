@@ -1,22 +1,65 @@
-body.index_says {
-  ul.says {
-    margin: 0;
-    padding: 0;
-    list-style: none;
+ul.says {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 17px;
 
-    font-size: 20px;
+  .nickname {
+    font-weight: bold;
+  }
+}
+
+body.index_says {
+  .page-header {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    margin-top: 30px;
+  }
+  ul.says {
+    font-size: 15px;
     .text {
-      line-height: 30px;
+      line-height: 25px;
     }
   }
 }
 
 body.show_says {
-  .nickname {
-    font-size: 17px;
-    font-weight: bold;
+  h1 {
+    .text {
+      font-weight: 100;
+    }
   }
-  .text {
-    font-size: 20px;
+  .say {
+    .nickname {
+      font-size: 20px;
+    }
+    .text {
+      font-size: 20px;
+    }
+  }
+  .vote-set {
+    float: right;
+  }
+  form {
+    margin: 20px 0 0 0px;
+  }
+
+  ul.after-says {
+    li {
+      overflow: hidden;
+      border-bottom: 1px solid white;
+      padding: 5px 5px 5px 0;
+    }
+    li:hover {
+      background: #ccc;
+    }
+
+    .nickname {
+      font-size: 15px;
+    }
+    .text {
+      font-size: 15px;
+      line-height: 30px;
+    }
   }
 }

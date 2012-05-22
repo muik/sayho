@@ -2,11 +2,29 @@ class SaysController < ApplicationController
   # GET /says
   # GET /says.json
   def index
-    @says = Say.begin.popular
+    if params[:type]
+      case params[:type].to_sym
+        when :popular
+          @says = Say.popular.limit(20)
+        when :recent
+          @says = Say.recent.limit(20)
+        when :my_popular
+          @says = current_user.says.popular.limit(20)
+        when :my_recent
+          @says = current_user.says.recent.limit(20)
+        else
+          return render text: 'Not Found', status: 404
+      end
+    else
+      @popular_says = Say.popular.limit(20)
+      @recent_says = Say.recent.limit(20)
+      @my_popular_says = current_user.says.popular.limit(20)
+      @my_recent_says = current_user.says.recent.limit(20)
+    end
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @says }
+#      format.json { render json: @says }
     end
   end
 
@@ -42,12 +60,14 @@ class SaysController < ApplicationController
   # POST /says.json
   def create
     @say = Say.new(params[:say])
+    @say.user_id = current_user.id
     @say.before_say_id = params[:say_id] if params[:say_id]
     save_nickname(@say.nickname)
+    location = (@say.before_say or @say)
 
     respond_to do |format|
       if @say.save
-        format.html { redirect_to @say, notice: 'Say was successfully created.' }
+        format.html { redirect_to location, notice: 'Say was successfully created.' }
         format.json { render json: @say, status: :created, location: @say }
       else
         format.html { render action: "new" }
@@ -63,40 +83,10 @@ class SaysController < ApplicationController
     }
   end
 
-  def votes
-    user = current_user
-    say = Say.find(params[:id])
-    result = user.vote(say, params[:value])
-    unless result
-      result = user.voted?(say) && user.vote_value(say).to_s == params[:value]
-    end
-
-    respond_to do |format|
-      if result
-        format.json { render json: true, status: :created }
-      else
-        format.json { render json: nil, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def destroy_vote
-    user = current_user
-    say = Say.find(params[:id])
-    user.unvote(say)
-    
-    respond_to do |format|
-      if user.voted?(say) == false
-        format.json { render json: true, status: :created }
-      else
-        format.json { render json: nil, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # PUT /says/1
   # PUT /says/1.json
   def update
+    return
     @say = Say.find(params[:id])
 
     respond_to do |format|

@@ -1,49 +1,45 @@
 <p id="notice"><%= notice %></p>
 
 <% @say.before_says.each do |say| %>
-<ul>
-  <li><%= say.nickname %> - <%= link_to say.text, say %></li>
-</ul>
-<% end %>
-
-<div class="say">
-  <span class="nickname">
-    <%= @say.nickname %>
-  </span>
-  <p class="text"><%= @say.text %></p>
-  <div class="vote-set">
-    <%= vote_button_tag @say.id, :up %>
-    <%= vote_button_tag @say.id, :down %>
-    <span class="point"><%= @say.point %> (123/-12)</span>
-  </div>
-</div>
-<p>
-  <%= @say.votes %>
-</p>
-
-<% @say.after_says.after_popular.each do |say| %>
 <ul class="says">
   <li>
-    <span class="nickname"><%= say.nickname %></span> <span class="text"><%= link_to say.text, say %></span>
-    <div class="vote-set">
-      <%= vote_button_tag say.id, :up %>
-      <%= vote_button_tag say.id, :down %>
-      <span class="point"><%= say.point %> (123/-12)</span>
-    </div>
+    <span class="nickname"><%= say.nickname %></span>
+    <span class="text"><%= link_to say.text, say %></span>
   </li>
 </ul>
 <% end %>
 
-<%= form_for([@say, @say.after_says.build]) do |f| %>
-  <div class="field">
-    <%= f.label :nickname %><br />
-    <%= f.text_field :nickname, value: saved_nickname %>
+<div class="page-header say">
+  <div class="vote-set">
+    <%= vote_button_tag @say.id, :up, @say.up_votes_count %>
+    <%= vote_button_tag @say.id, :down, @say.down_votes_count %>
   </div>
-  <div class="field">
-    <%= f.label :text %><br />
-    <%= f.text_field :text %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+  <h1>
+    <span class="nickname"><%= @say.nickname %></span>
+    <span class="text"><%= @say.text %></span>
+  </h1>
+</div>
+
+<div>
+다음으로 이어질 말들은..
+</div>
+
+<div class="well">
+  <% @say.after_says.after_popular.each do |say| %>
+  <ul class="says after-says">
+    <li>
+      <div class="vote-set">
+        <%= vote_button_tag say.id, :up, say.up_votes_count %>
+        <%= vote_button_tag say.id, :down, say.down_votes_count %>
+      </div>
+      <span class="nickname"><%= say.nickname %></span> <span class="text"><%= link_to say.text, say %></span>
+    </li>
+  </ul>
+  <% end %>
+
+  <%= form_for([@say, @say.after_says.build], html: {class: 'form-inline'}) do |f| %>
+    <%= f.text_field :nickname, value: saved_nickname, class: 'input-small', placeholder: 'Nickname' %>
+    <%= f.text_field :text, placeholder: 'Text', class: 'input-xlarge' %>
+    <%= f.submit class: 'btn' %>
+  <% end %>
+</div>

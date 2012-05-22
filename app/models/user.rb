@@ -4,6 +4,7 @@ class User
   field :user_identity, type: String
   field :votes_count, type: Integer
   has_many :votes
+  has_many :says
 
   index :user_identity, unique: true
 
