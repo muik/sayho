@@ -19,7 +19,6 @@
     <link href="images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
   </head>
   <body class="<%= controller.controller_name %> <%= controller.action_name %>_<%= controller.controller_name %>">
-
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
@@ -31,9 +30,12 @@
           <a class="brand" href="/">Sayho</a>
           <div class="container nav-collapse">
             <ul class="nav">
-              <li><%= link_to "Link1", "/path1"  %></li>
-              <li><%= link_to "Link2", "/path2"  %></li>
-              <li><%= link_to "Link3", "/path3"  %></li>
+            <% %w(popular recent my_popular my_recent).each do |value| %>
+              <li<% if value == params[:type] %> class="active"<% end %>><%= link_to t("says.types.#{value}"), says_path(type: value) %></li>
+            <% end %>
+            </ul>
+            <ul class="nav pull-right">
+              <li<% if controller.controller_name == 'says' && controller.action_name == 'new' %> class="active"<% end %>><%= link_to raw('<strong>대화시작</strong>'), new_say_path %></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -43,7 +45,7 @@
     <div class="container">
       <div class="content">
         <div class="row">
-          <div class="span10">
+          <div class="span10 offset1">
             <%= yield %>
           </div>
         </div><!--/row-->

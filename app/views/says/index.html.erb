@@ -4,6 +4,13 @@
     <div class="page-header">
       <h1><%= link_to t("says.types.#{params[:type]}"), says_path(type: params[:type]) %></h1>
     </div>
+  <% if @says.count < 1 %>
+    <div class="no-results">
+      <p>등록된 톡이 없습니다.
+      <%= link_to raw('<i class="icon-comment"></i> 톡쓰기'), new_say_path, class: 'btn btn-large' %>
+      </p>
+    </div>
+  <% else %>
     <ul class="says">
     <% @says.each do |say| %>
       <li>
@@ -16,6 +23,7 @@
     <% end %>
     </ul>
     <%= paginate @says, theme: :bootstrap %>
+  <% end %>
   </div>
 </div>
 

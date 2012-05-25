@@ -1,4 +1,6 @@
-<p id="notice"><%= notice %></p>
+<% if notice.present? %>
+<div id="notice" class="alert alert-notice"><%= notice %></div>
+<% end %>
 
 <% @say.before_says.each do |say| %>
 <ul class="says">
@@ -20,12 +22,8 @@
   </h1>
 </div>
 
-<div>
-다음으로 이어질 말들은..
-</div>
-
 <div class="well">
-  <% @say.after_says.after_popular.each do |say| %>
+  <% @after_says.each do |say| %>
   <ul class="says after-says">
     <li>
       <div class="vote-set">
@@ -33,13 +31,38 @@
         <%= vote_button_tag say.id, :down, say.down_votes_count %>
       </div>
       <span class="nickname"><%= say.nickname %></span> <span class="text"><%= link_to say.text, say %></span>
+    <% if say.after_says_count %>
+      <span class="badge badge-info"><%= say.after_says_count %></span>
+    <% end %>
     </li>
   </ul>
   <% end %>
 
-  <%= form_for([@say, @say.after_says.build], html: {class: 'form-inline'}) do |f| %>
-    <%= f.text_field :nickname, value: saved_nickname, class: 'input-small', placeholder: 'Nickname' %>
-    <%= f.text_field :text, placeholder: 'Text', class: 'input-xlarge' %>
-    <%= f.submit class: 'btn' %>
+  <%= form_for([@say, @after_say], html: {class: 'form-inline say'}) do |f| %>
+  <% if @after_say.errors.any? %>
+    <div class="alert alert-error">등록 실패</div>
+  <% end %>
+    <fieldset>
+      <div class="control-group <%= 'error' if @after_say.errors[:nickname].present? %>">
+        <%= f.label :nickname, class: 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :nickname, value: saved_nickname, class: 'input-small', autofocus: (@after_says.count < 1), placeholder: t('mongoid.attributes.say.nickname') %>
+          <span class="help-block"><%= @after_say.errors[:nickname].join(', ') %></span>
+        </div>
+      </div>
+      <div class="control-group <%= 'error' if @after_say.errors[:text].present? %>">
+        <%= f.label :text, class: 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :text, class: 'input-xlarge span6', placeholder: '이어지는 센스있는 대화..' %>
+          <span class="help-block"><%= @after_say.errors[:text].join(', ') %></span>
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">&nbsp;</label>
+        <div class="controls">
+          <%= f.submit class: 'btn' %>
+        </div>
+      </div>
+    </fieldset>
   <% end %>
 </div>

@@ -33,6 +33,8 @@ class SaysController < ApplicationController
   # GET /says/1.json
   def show
     @say = Say.find(params[:id])
+    @after_says = @say.after_says.after_popular
+    @after_say = @say.after_says.build
 
     respond_to do |format|
       format.html # show.html.erb
@@ -68,10 +70,17 @@ class SaysController < ApplicationController
 
     respond_to do |format|
       if @say.save
-        format.html { redirect_to location, notice: 'Say was successfully created.' }
+        format.html { redirect_to location, notice: t('mongoid.notices.say.created') }
         format.json { render json: @say, status: :created, location: @say }
       else
-        format.html { render action: "new" }
+        if @say.before_say
+          @after_say = @say
+          @say = @say.before_say
+          @after_says = @say.after_says.after_popular
+          format.html { render action: "show" }
+        else
+          format.html { render action: "new" }
+        end
         format.json { render json: @say.errors, status: :unprocessable_entity }
       end
     end

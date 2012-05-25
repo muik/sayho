@@ -14,13 +14,22 @@ ko:
       my_popular: '나의 센스 톡'
       my_recent: '나의 최근 톡'
 
+  helpers:
+    submit:
+      create: '등록'
+
   mongoid:
     notices:
+      say:
+        created: '톡이 등록되었습니다.'
       user:
         updated: '회원정보가 수정되었습니다.'
         password_updated: '비밀번호가 수정되었습니다.'
         auth_deleted: '인증이 해제되었습니다.'
     attributes:
+      say:
+        nickname: '대화명'
+        text: '내용'
       user:
         sns: 'SNS 인증'
         share: 'SNS 공유'
@@ -44,6 +53,14 @@ ko:
       messages:
         validations: 'asdf'
       models:
+        say:
+          attributes:
+            text:
+              blank: '입력해주세요.'
+              too_long: '제한 문자수 초과'
+            nickname:
+              blank: '입력해주세요.'
+              too_long: '제한 문자수 초과'
         user:
           attributes:
             email:

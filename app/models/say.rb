@@ -11,6 +11,8 @@ class Say
   belongs_to :user
   has_many :votes
   validates_presence_of :nickname, :text
+  validates_length_of :nickname, maximum: 20
+  validates_length_of :text, maximum: 100
   scope :recent, order_by(:created_at, :desc)
   scope :popular, order_by(:point, :desc).recent
   scope :hot, order_by(:after_says_count, :desc).recent

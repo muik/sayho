@@ -1,31 +1,28 @@
-<%= form_for(@say, html: {:class => 'form-horizontal'}) do |f| %>
+<%= form_for(@say, html: {:class => 'form-inline say'}) do |f| %>
   <% if @say.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@say.errors.count, "error") %> prohibited this say from being saved:</h2>
-
-      <ul>
-      <% @say.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
+    <div class="alert alert-error">등록 실패</div>
   <% end %>
 
   <fieldset>
-    <div class="control-group">
+    <div class="control-group <%= 'error' if @say.errors[:nickname].present? %>">
       <%= f.label :nickname, class: 'control-label' %>
       <div class="controls">
-        <%= f.text_field :nickname, class: 'input-xlarge' %>
+        <%= f.text_field :nickname, class: 'input-small', autofocus: true, placeholder: t('mongoid.attributes.say.nickname') %>
+        <span class="help-block"><%= @say.errors[:nickname].join(', ') %></span>
+      </div>
+    </div>
+    <div class="control-group <%= 'error' if @say.errors[:text].present? %>">
+      <%= f.label :text, class: 'control-label' %>
+      <div class="controls">
+        <%= f.text_field :text, class: 'input-xlarge span6', placeholder: t('mongoid.attributes.say.text') %>
+        <span class="help-block"><%= @say.errors[:text].join(', ') %></span>
       </div>
     </div>
     <div class="control-group">
-      <%= f.label :text, class: 'control-label' %>
+      <label class="control-label">&nbsp;</label>
       <div class="controls">
-        <%= f.text_field :text, class: 'input-xlarge' %>
+        <%= f.submit class: 'btn' %>
       </div>
-    </div>
-    <div class="form-actions">
-      <%= f.submit class: 'btn btn-large' %>
     </div>
   </fieldset>
 <% end %>
