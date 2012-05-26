@@ -1,12 +1,15 @@
 set :application, "sayho"
 set :repository,  "git@github.com:muik/sayho.git"
+set :deploy_to, "/home/muik/deploy/#{application}"
+set :rails_env, "production"
+set :use_sudo, false
+set :rvm_type, :user
 
 set :scm, :git
 
 role :web, "muik.net"                          # Your HTTP server, Apache/etc
 role :app, "muik.net"                          # This may be the same as your `Web` server
 role :db,  "muik.net", :primary => true # This is where Rails migrations will run
-role :db,  "your slave db-server here"
 
 require "rvm/capistrano"
 require "bundler/capistrano"
