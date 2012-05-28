@@ -29,3 +29,9 @@ require 'capistrano-unicorn'
 #     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
 #   end
 # end
+
+namespace :deploy do
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "ln -sf #{deploy_to}/#{shared_dir}/set_env.rb #{current_release}/config/", {:roles => :app}
+  end
+end
